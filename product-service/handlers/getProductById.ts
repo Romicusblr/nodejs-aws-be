@@ -1,6 +1,7 @@
 import { APIGatewayProxyHandler } from "aws-lambda";
 import "source-map-support/register";
-import productList from "./productList.json";
+// commonjs import for jest importing
+const productList = require("./productList.json");
 
 const getProductById: APIGatewayProxyHandler = async (event) => {
   const productId = event?.pathParameters?.productId;
