@@ -4,7 +4,8 @@
   "description": "Serverless webpack example using Typescript",
   "main": "handler.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "deploy": "sls deploy"
   },
   "dependencies": {
     "source-map-support": "^0.5.10"
