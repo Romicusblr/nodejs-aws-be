@@ -18,9 +18,7 @@ const handler: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (
     throw new Error(`Product with id ${productId} is not found`);
   }
 
-  return formatJSONResponse({
-    message: { product },
-  });
+  return formatJSONResponse({ product });
 };
 
 export const main = middyfy(handler);
