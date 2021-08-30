@@ -1,5 +1,5 @@
 //@ts-nocheck
-import getProductsList from "./handler";
+import {main as getProductsList} from "./handler";
 
 describe("getProductsList function", () => {
   test("returns correct array", async () => {

@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`getProductById function returns correct object 1`] = `
+Object {
+  "message": Object {
+    "product": Object {
+      "count": 4,
+      "description": "With a 1-inch sensor, 5.4K video, MasterShots, and much more, DJI Air 2S is the ultimate all-in-one camera drone.",
+      "id": "1",
+      "price": 1029,
+      "title": "DJI Air 2S",
+    },
+  },
+}
+`;
