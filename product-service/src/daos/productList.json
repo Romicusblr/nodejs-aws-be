@@ -1,0 +1,42 @@
+[
+  {
+    "count": 4,
+    "description": "With a 1-inch sensor, 5.4K video, MasterShots, and much more, DJI Air 2S is the ultimate all-in-one camera drone.",
+    "id": "1",
+    "price": 1029,
+    "title": "DJI Air 2S",
+    "image": "images/mavic-air-2s.jpeg"
+  },
+  {
+    "count": 7,
+    "description": "Small but mighty, DJI Mini 2 features 4K videos, 4x Zoom, and stunning panoramas, allowing you to explore a whole new perspective.",
+    "id": "2",
+    "price": 469,
+    "title": "DJI Mini 2",
+    "image": "images/mavic-mini-2.jpeg"
+  },
+  {
+    "count": 12,
+    "description": "Mavic Air 2 takes power and portability to the next level, offering advanced features in a compact form factor.",
+    "id": "3",
+    "price": 849,
+    "title": "Mavic Air 2",
+    "image": "images/mavic-air-2.jpeg"
+  },
+  {
+    "count": 7,
+    "description": "The compact yet powerful Mavic Mini is the perfect creative companion that effortlessly elevates the ordinary. ",
+    "id": "4",
+    "price": 399,
+    "title": "Mavic Mini",
+    "image": "images/mavic-mini.jpeg"
+  },
+  {
+    "count": 8,
+    "description": "The Mavic 2 offers iconic Hasselblad image quality on the Pro and a high-performance zoom lens on the Zoom.",
+    "id": "5",
+    "price": 1999,
+    "title": "Mavic 2",
+    "image": "images/mavic-2.jpeg"
+  }
+]
