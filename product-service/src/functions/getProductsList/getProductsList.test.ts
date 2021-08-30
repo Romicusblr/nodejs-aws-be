@@ -6,6 +6,6 @@ describe("getProductsList function", () => {
     const res = await getProductsList({});
     const {message: {productList}} = JSON.parse(res.body)
     expect(Array.isArray(productList)).toBe(true);
-    expect(productList.length).toBe(8);
+    expect(productList.length).toBe(5);
   });
 });
