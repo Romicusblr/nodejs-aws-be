@@ -3,7 +3,11 @@ module.exports = {
   testEnvironment: "node",
   globals: {
     "ts-jest": {
-      "module": "commonjs",
+      tsconfig: "tsconfig.json",
     },
+  },
+  moduleNameMapper: {
+    "@libs/(.*)": "<rootDir>/src/libs/$1",
+    "@functions/(.*)": "<rootDir>/src/functions/$1",
   },
 };

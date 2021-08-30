@@ -1,12 +1,9 @@
-import type { Serverless } from "serverless/aws";
+import type { AWS } from "@serverless/typescript";
 
-const serverlessConfiguration: Serverless = {
-  service: {
-    name: "rs-app-product-service",
-    // app and org for use with dashboard.serverless.com
-    // app: your-app-name,
-    // org: your-org-name,
-  },
+import { getProductById, getProductsList } from "@functions/index";
+
+const serverlessConfiguration: AWS = {
+  service: "rs-app-product-service",
   frameworkVersion: "2",
   custom: {
     webpack: {
@@ -14,51 +11,23 @@ const serverlessConfiguration: Serverless = {
       includeModules: true,
     },
   },
-  // Add the serverless-webpack plugin
   plugins: ["serverless-webpack"],
   provider: {
     name: "aws",
-    runtime: "nodejs12.x",
-    profile: "default",
+    runtime: "nodejs14.x",
+    profile: "rs",
     region: "eu-west-1",
     apiGateway: {
       minimumCompressionSize: 1024,
+      shouldStartNameWithService: true,
     },
     environment: {
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1",
     },
+    lambdaHashingVersion: "20201221",
   },
-  functions: {
-    getProductsList: {
-      handler: "handler.getProductsList",
-      events: [
-        {
-          http: {
-            method: "get",
-            path: "products",
-          },
-        },
-      ],
-    },
-    getProductById: {
-      handler: "handler.getProductById",
-      events: [
-        {
-          http: {
-            method: "get",
-            path: "products/{productId}",
-            request: {
-              parameters: {
-                paths: {
-                  productId: true,
-                },
-              },
-            },
-          },
-        },
-      ],
-    },
-  },
+  // import the function via paths
+  functions: { getProductById, getProductsList },
 };
 
 module.exports = serverlessConfiguration;
