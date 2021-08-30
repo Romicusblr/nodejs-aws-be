@@ -6,6 +6,7 @@ import { middyfy } from "@libs/lambda";
 
 import schema from "./schema";
 import productList from "../../productList.json";
+import createError from "http-errors";
 
 const handler: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (
   event
@@ -15,7 +16,7 @@ const handler: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (
   const product = productList.find(({ id }) => id === productId);
 
   if (!product) {
-    throw new Error(`Product with id ${productId} is not found`);
+    throw createError(404, `Product with id ${productId} is not found`);
   }
 
   return formatJSONResponse({ product });
