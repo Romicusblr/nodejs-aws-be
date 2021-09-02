@@ -6,22 +6,34 @@
   "scripts": {
     "test": "jest",
     "deploy": "sls deploy",
-    "package": "sls package"
+    "build:models": "kanel",
+    "migrate:down": "knex migrate:down",
+    "migrate:up": "knex migrate:up",
+    "migrate:up:all": "knex migrate:latest",
+    "migrate:down:all": "knex migrate:rollback",
+    "migrate:create": "knex migrate:make ${NAME:-rs} -x ts",
+    "seed:create": "knex seed:make ${NAME:-rs}",
+    "seed:run": "knex seed:run"
   },
   "dependencies": {
     "@middy/core": "^1.5.2",
     "@middy/http-error-handler": "^2.5.1",
     "@middy/http-json-body-parser": "^1.5.2",
+    "dotenv": "^10.0.0",
     "http-errors": "^1.8.0",
+    "knex": "^0.95.10",
+    "pg": "^8.7.1",
     "source-map-support": "^0.5.19"
   },
   "devDependencies": {
+    "@kristiandupont/recase": "^1.1.1",
     "@serverless/typescript": "^2.23.0",
     "@types/aws-lambda": "^8.10.71",
     "@types/jest": "^27.0.1",
     "@types/node": "^14.14.25",
     "jest": "^27.1.0",
     "json-schema-to-ts": "^1.5.0",
+    "kanel": "^2.3.1",
     "serverless": "^2.23.0",
     "serverless-webpack": "^5.3.5",
     "ts-jest": "^27.0.5",
