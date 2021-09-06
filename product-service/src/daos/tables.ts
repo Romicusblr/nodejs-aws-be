@@ -1,4 +1,2 @@
-export default {
-  PRODUCTS: "rs.products",
-  STOCKS: "rs.stocks"
-}
+export const PRODUCTS = "rs.products";
+export const STOCKS = "rs.stocks";
