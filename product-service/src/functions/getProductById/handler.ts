@@ -25,7 +25,8 @@ const handler: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (
 
     return formatJSONResponse({ product });
   } catch (err) {
-    return formatJSONResponse(createError(500, err.message));
+    console.log(err);
+    return formatJSONResponse(createError(500));
   } finally {
     await productDAO.client.destroy();
   }
