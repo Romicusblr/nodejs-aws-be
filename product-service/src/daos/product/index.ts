@@ -15,13 +15,11 @@ export default class extends DAO<ProductsDB> {
   }
 
   async getWithCount(id: string): Promise<ProductsDB> {
-    console.log("🚀 ~ file: index.ts ~ line 18 ~ extends ~ getWithCount ~ id", id)
     if (!id) return null;
     const [res] = await this.client(table)
       .select()
       .join(STOCKS, `${PRODUCTS}.id`, `${STOCKS}.product_id`)
       .where({ [`${PRODUCTS}.id`]: id });
-    console.log("🚀 ~ file: index.ts ~ line 23 ~ extends ~ getWithCount ~ res", res)
     return res;
   }
 
