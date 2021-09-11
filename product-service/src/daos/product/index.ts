@@ -15,17 +15,17 @@ export default class extends DAO<ProductsDB> {
   }
 
   async getWithCount(id: string): Promise<ProductsDB> {
+    console.log("🚀 ~ file: index.ts ~ line 18 ~ extends ~ getWithCount ~ id", id)
+    if (!id) return null;
     const [res] = await this.client(table)
       .select()
       .join(STOCKS, `${PRODUCTS}.id`, `${STOCKS}.product_id`)
-      .where({ id });
+      .where({ [`${PRODUCTS}.id`]: id });
+    console.log("🚀 ~ file: index.ts ~ line 23 ~ extends ~ getWithCount ~ res", res)
     return res;
   }
 
   async searchWithCount(equal: Partial<ProductsDB>, paging?: Paging) {
-    if (Object.values(equal).every((v) => v === undefined || v === null)) {
-      return { total: 0, rows: [] };
-    }
     const { limit, offset } = toPaging(paging);
 
     const [{ count: total }] = await this.client(table)

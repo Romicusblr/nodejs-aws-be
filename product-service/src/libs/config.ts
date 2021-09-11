@@ -1,15 +1,12 @@
 import dotenv from "dotenv";
 
-const env: string = (process.env.NODE_ENV = process.env.NODE_ENV || "development");
+const env: string = process.env.NODE_ENV ?? "development";
 
 dotenv.config();
 
 export default {
   app: {
     env,
-    acKey: process.env.AC_KEY,
-    awsQueueUrl: process.env.AWS_QUEUE_URL,
-    awsRegion: process.env.AWS_DEFAULT_REGION,
   },
   db: {
     host: process.env.DB_HOST,

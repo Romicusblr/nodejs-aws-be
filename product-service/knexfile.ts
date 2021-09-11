@@ -1,10 +1,6 @@
 // Update with your config settings.
 import dotenv from "dotenv";
 
-const env: string = (process.env.NODE_ENV = process.env.NODE_ENV || "development");
-console.log("Using environment: ", env);
-
-
 dotenv.config();
 
 const config = {

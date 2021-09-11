@@ -1,10 +1,9 @@
-import knex, {Knex} from "knex";
+import knex, { Knex } from "knex";
 import config from "@libs/config";
-import {Model} from "@models/db";
+import { Model } from "@models/db";
 import logger from "@libs/logger";
-import "./query-logger";
 
-const knexClient = knex({
+const knexConfig: Knex.Config = {
   client: "pg",
   connection: {
     host: config.db.host,
@@ -14,16 +13,20 @@ const knexClient = knex({
     database: config.db.database,
   },
   // debug: true
-});
+};
 
-logger.info("connected to db: %s@%s:%s/%s", config.db.user, config.db.host, config.db.port, config.db.database);
+logger.info(
+  "connected to db: %s@%s:%s/%s",
+  config.db.user,
+  config.db.host,
+  config.db.port,
+  config.db.database
+);
 
 export class DAO<T extends Model> {
   client: Knex<T, unknown[]>;
 
   constructor(client?: Knex<T, unknown[]>) {
-    this.client = client ?? knexClient;
+    this.client = client ?? knex(knexConfig);
   }
 }
-
-export default knexClient;
