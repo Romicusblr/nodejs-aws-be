@@ -30,3 +30,5 @@ export class DAO<T extends Model> {
     this.client = client ?? knex(knexConfig);
   }
 }
+
+export const getClient = (): Knex => knex(knexConfig);

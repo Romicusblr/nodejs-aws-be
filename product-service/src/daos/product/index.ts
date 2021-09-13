@@ -5,7 +5,7 @@ import { ProductsDB, ProductsDBInitializer, StocksDB } from "@models/db";
 const table = PRODUCTS;
 
 export default class extends DAO<ProductsDB> {
-  async create(params: ProductsDBInitializer) {
+  async create(params: ProductsDBInitializer): Promise<ProductsDB> {
     const [res] = await this.client(table)
       .insert(params)
       .returning("*")
@@ -14,7 +14,7 @@ export default class extends DAO<ProductsDB> {
     return res;
   }
 
-  async getWithCount(id: string): Promise<ProductsDB> {
+  async getWithCount(id: string): Promise<ProductsDB & StocksDB> {
     if (!id) return null;
     const [res] = await this.client(table)
       .select()
