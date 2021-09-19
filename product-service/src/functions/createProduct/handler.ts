@@ -3,22 +3,23 @@ import "source-map-support/register";
 import type { ValidatedEventAPIGatewayProxyEvent } from "@libs/apiGateway";
 import { formatJSONResponse } from "@libs/apiGateway";
 import { middyfy } from "@libs/lambda";
-import ProductDAO from "@daos/product";
+import DBTransactionDAO from "@daos/db_transaction";
 import createError from "http-errors";
 
 import schema from "./schema";
 
-const handler: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async () => {
-  let productDAO: ProductDAO;
+const handler: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (event) => {
+  let dao: DBTransactionDAO;
   try {
-    productDAO = new ProductDAO();
-    const productList = await productDAO.searchWithCount({});
+    dao = new DBTransactionDAO();
+    const product = event.body;
+    const productList = await dao.createProduct(product);
     return formatJSONResponse({ productList });
   } catch (err) {
     console.log(err);
     return formatJSONResponse(createError(500));
   } finally {
-    productDAO.client.destroy();
+    dao.client.destroy();
   }
 };
 

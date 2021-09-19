@@ -1,14 +1,21 @@
 import type { AWS } from "@serverless/typescript";
+import dotenv from "dotenv";
+dotenv.config();
 
-import { getProductById, getProductsList } from "@functions/index";
+import {
+  getProductById,
+  getProductsList,
+  createProduct,
+} from "@functions/index";
 
 const serverlessConfiguration: AWS = {
   service: "rs-app-product-service",
+  useDotenv: true,
   frameworkVersion: "2",
   custom: {
     webpack: {
       webpackConfig: "./webpack.config.js",
-      includeModules: true,
+      includeModules: { forceInclude: ["pg"] },
     },
   },
   plugins: ["serverless-webpack"],
@@ -27,7 +34,7 @@ const serverlessConfiguration: AWS = {
     lambdaHashingVersion: "20201221",
   },
   // import the function via paths
-  functions: { getProductById, getProductsList },
+  functions: { getProductById, getProductsList, createProduct },
 };
 
 module.exports = serverlessConfiguration;

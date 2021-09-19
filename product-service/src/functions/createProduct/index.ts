@@ -1,5 +1,6 @@
 import { handlerPath } from "@libs/handlerResolver";
 import type { AWS } from "@serverless/typescript";
+import schema from "./schema";
 
 const functionConfig: AWS["functions"][""] = {
   handler: `${handlerPath(__dirname)}/handler.main`,
@@ -13,9 +14,14 @@ const functionConfig: AWS["functions"][""] = {
   events: [
     {
       http: {
-        method: "get",
+        method: "post",
         cors: true,
         path: "products",
+        request: {
+          schemas: {
+            "application/json": schema.properties.body,
+          },
+        },
       },
     },
   ],
