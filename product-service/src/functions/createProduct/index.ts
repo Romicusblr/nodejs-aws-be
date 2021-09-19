@@ -1,6 +1,8 @@
-import { handlerPath } from '@libs/handlerResolver';
+import { handlerPath } from "@libs/handlerResolver";
+import type { AWS } from "@serverless/typescript";
+import schema from "./schema";
 
-export default {
+const functionConfig: AWS["functions"][""] = {
   handler: `${handlerPath(__dirname)}/handler.main`,
   environment: {
     DB_HOST: process.env.DB_HOST,
@@ -15,7 +17,14 @@ export default {
         method: "post",
         cors: true,
         path: "products",
+        request: {
+          schemas: {
+            "application/json": schema.properties.body,
+          },
+        },
       },
-    }
-  ]
-}
+    },
+  ],
+};
+
+export default functionConfig;

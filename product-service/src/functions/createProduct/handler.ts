@@ -23,4 +23,4 @@ const handler: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (event)
   }
 };
 
-export const main = middyfy(handler);
+export const main = middyfy(handler, schema);
