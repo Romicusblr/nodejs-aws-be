@@ -10,3 +10,6 @@ jspm_packages
 
 # env file
 .env
+
+# ts compiled files
+dist

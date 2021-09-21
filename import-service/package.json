@@ -10,6 +10,8 @@
     "deploy:function": "sls deploy function -f"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.32.0",
+    "@aws-sdk/s3-request-presigner": "^3.32.0",
     "@middy/core": "^1.5.2",
     "@middy/http-cors": "^2.5.1",
     "@middy/http-error-handler": "^2.5.1",

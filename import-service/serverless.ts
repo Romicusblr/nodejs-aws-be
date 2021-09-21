@@ -3,19 +3,18 @@ import dotenv from "dotenv";
 dotenv.config();
 
 import {
-  getProductById,
-  getProductsList,
-  createProduct,
+  importProductsFile,
+  importFileParser
 } from "@functions/index";
 
 const serverlessConfiguration: AWS = {
-  service: "rs-app-product-service",
+  service: "rs-app-import-service",
   useDotenv: true,
   frameworkVersion: "2",
   custom: {
     webpack: {
       webpackConfig: "./webpack.config.js",
-      includeModules: { forceInclude: ["pg"] },
+      includeModules: true,
     },
   },
   plugins: ["serverless-webpack"],
@@ -30,11 +29,28 @@ const serverlessConfiguration: AWS = {
     },
     environment: {
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1",
+      BUCKET_NAME: process.env.BUCKET_NAME,
     },
     lambdaHashingVersion: "20201221",
+    iam: {
+      role: {
+        statements: [
+          {
+            Effect: "Allow",
+            Action: "s3:ListBucket",
+            Resource: "arn:aws:s3:::" + process.env.BUCKET_NAME
+          },
+          {
+            Effect: "Allow",
+            Action: "s3:*",
+            Resource: "arn:aws:s3:::" + process.env.BUCKET_NAME + "/*"
+          }
+        ]
+      }
+    }
   },
   // import the function via paths
-  functions: { getProductById, getProductsList, createProduct },
+  functions: { importProductsFile, importFileParser },
 };
 
 module.exports = serverlessConfiguration;
