@@ -16,11 +16,10 @@ const handler: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (
 ) => {
   try {
     const name = event?.queryStringParameters?.name;
-    const prefix = "uploaded/";
 
     const putObjectParams = {
       Bucket: config.aws.bucketName,
-      Key: prefix + name,
+      Key: config.app.uploadFolder + name,
       ContentType: "text/csv",
     };
 

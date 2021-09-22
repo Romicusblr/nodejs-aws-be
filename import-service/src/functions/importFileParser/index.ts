@@ -8,8 +8,16 @@ const functionConfig: AWS["functions"][""] = {
     {
       s3: {
         bucket: config.aws.bucketName,
-        event: "s3:ObjectCreated:*"
-      }
+        event: "s3:ObjectCreated:Put",
+        rules: [
+          {
+            prefix: config.app.uploadFolder,
+          },
+          {
+            suffix: ".csv",
+          }
+        ],
+      },
     },
   ],
 };
