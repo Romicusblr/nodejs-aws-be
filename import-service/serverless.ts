@@ -2,10 +2,9 @@ import type { AWS } from "@serverless/typescript";
 import dotenv from "dotenv";
 dotenv.config();
 
-import {
-  importProductsFile,
-  importFileParser
-} from "@functions/index";
+import { importProductsFile, importFileParser } from "@functions/index";
+
+const BUCKET_NAME = process.env.BUCKET_NAME;
 
 const serverlessConfiguration: AWS = {
   service: "rs-app-import-service",
@@ -29,7 +28,7 @@ const serverlessConfiguration: AWS = {
     },
     environment: {
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1",
-      BUCKET_NAME: process.env.BUCKET_NAME,
+      BUCKET_NAME,
     },
     lambdaHashingVersion: "20201221",
     iam: {
@@ -38,16 +37,29 @@ const serverlessConfiguration: AWS = {
           {
             Effect: "Allow",
             Action: "s3:ListBucket",
-            Resource: "arn:aws:s3:::" + process.env.BUCKET_NAME
+            Resource: "arn:aws:s3:::" + BUCKET_NAME,
           },
           {
             Effect: "Allow",
             Action: "s3:*",
-            Resource: "arn:aws:s3:::" + process.env.BUCKET_NAME + "/*"
-          }
-        ]
-      }
-    }
+            Resource: "arn:aws:s3:::" + BUCKET_NAME + "/*",
+          },
+        ],
+      },
+    },
+    s3: {
+      [BUCKET_NAME]: {
+        corsConfiguration: {
+          CorsRules: [
+            {
+              AllowedHeaders: ["*"],
+              AllowedMethods: ["PUT"],
+              AllowedOrigins: ["*"],
+            }
+          ],
+        },
+      },
+    },
   },
   // import the function via paths
   functions: { importProductsFile, importFileParser },
