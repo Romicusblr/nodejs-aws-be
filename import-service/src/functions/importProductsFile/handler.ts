@@ -11,7 +11,7 @@ import config from "@libs/config";
 import schema from "./schema";
 const client = new S3Client({});
 
-const handler: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (
+export const handler: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (
   event
 ) => {
   try {

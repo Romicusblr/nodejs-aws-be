@@ -12,7 +12,7 @@ type ValidatedAPIGatewayProxyEvent<S> = Omit<
   FromSchema<S>;
 
 export type ValidatedEventAPIGatewayProxyEvent<S> = Handler<
-  ValidatedAPIGatewayProxyEvent<S>,
+  Partial<ValidatedAPIGatewayProxyEvent<S>>,
   APIGatewayProxyResult
 >;
 
