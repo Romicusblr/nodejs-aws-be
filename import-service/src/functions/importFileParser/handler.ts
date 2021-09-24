@@ -40,15 +40,19 @@ const handler: Handler<S3Event> = async (event) => {
           .on("end", resolve);
       });
 
+      const destKey = getParsedKey(key)
+
       const copyParams: CopyObjectCommandInput = {
         Bucket: bucket,
-        Key: getParsedKey(key),
+        Key: destKey,
         CopySource: `${bucket}/${key}`,
       };
 
       await client.send(new CopyObjectCommand(copyParams));
+      console.log("file %s copied to %s", key, destKey);
 
       await client.send(new DeleteObjectCommand(params));
+      console.log("file %s deleted", key);
     }
     return true;
   } catch (err) {
