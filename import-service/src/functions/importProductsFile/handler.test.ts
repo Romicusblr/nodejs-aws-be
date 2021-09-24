@@ -11,7 +11,7 @@ describe("importProductsFile function", () => {
   test("return expected url", async () => {
     const event: Partial<APIGatewayProxyEvent> = {
       queryStringParameters: {
-        a: "1",
+        name: "1",
       },
     };
 
@@ -19,5 +19,18 @@ describe("importProductsFile function", () => {
 
     const res = await handler(event, null, null);
     expect(res).toEqual({ statusCode: 200, body: '{"url":"test"}' });
+  });
+
+  test("return 500 error", async () => {
+    const event: Partial<APIGatewayProxyEvent> = {
+      queryStringParameters: {
+        name: "1",
+      },
+    };
+
+    mockedGetSignedUrl.mockRejectedValue(new Error("error"));
+
+    const res = await handler(event, null, null);
+    expect(res).toEqual({ statusCode: 500, body: '{"message":"Internal Server Error"}' });
   });
 });
