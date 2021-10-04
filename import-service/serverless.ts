@@ -55,7 +55,7 @@ const serverlessConfiguration: AWS = {
               AllowedHeaders: ["*"],
               AllowedMethods: ["PUT"],
               AllowedOrigins: ["*"],
-            }
+            },
           ],
         },
       },
