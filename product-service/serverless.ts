@@ -6,7 +6,7 @@ import {
   getProductById,
   getProductsList,
   createProduct,
-  catalogBatchProcess
+  catalogBatchProcess,
 } from "@functions/index";
 
 const serverlessConfiguration: AWS = {
@@ -35,7 +35,12 @@ const serverlessConfiguration: AWS = {
     lambdaHashingVersion: "20201221",
   },
   // import the function via paths
-  functions: { getProductById, getProductsList, createProduct, catalogBatchProcess },
+  functions: {
+    getProductById,
+    getProductsList,
+    createProduct,
+    catalogBatchProcess,
+  },
   resources: {
     Resources: {
       uploadQueueDead: {
@@ -57,11 +62,14 @@ const serverlessConfiguration: AWS = {
     },
     Outputs: {
       UploadQueueURL: {
-        Description: "URL of the upload queue",
+        Description: "URL of upload queue",
         Value: { Ref: "uploadQueue" },
+        Export: {
+          Name: { "Fn::Sub": "${AWS::StackName}-UploadQueueURL" },
+        },
       },
-      SourceQueueARN: {
-        Description: "ARN of source queue",
+      UploadQueueARN: {
+        Description: "ARN of upload queue",
         Value: { "Fn::GetAtt": ["uploadQueue", "Arn"] },
       },
       DeadLetterQueueURL: {
