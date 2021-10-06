@@ -9,6 +9,12 @@ import {
   catalogBatchProcess,
 } from "@functions/index";
 
+const EMAIL_ADDRESS = process.env.EMAIL_ADDRESS;
+const EMAIL_ADDRESS2 = process.env.EMAIL_ADDRESS2;
+const UPLOAD_QUEUE_NAME = process.env.UPLOAD_QUEUE_NAME;
+
+console.dir({ EMAIL_ADDRESS, EMAIL_ADDRESS2, UPLOAD_QUEUE_NAME });
+
 const serverlessConfiguration: AWS = {
   service: "rs-app-product-service",
   useDotenv: true,
@@ -31,6 +37,18 @@ const serverlessConfiguration: AWS = {
     },
     environment: {
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1",
+      CREATE_PRODUCT_TOPIC_ARN: { Ref: "createProductTopic" },
+    },
+    iam: {
+      role: {
+        statements: [
+          {
+            Effect: "Allow",
+            Action: "sns:publish",
+            Resource: { Ref: "createProductTopic" },
+          },
+        ],
+      },
     },
     lambdaHashingVersion: "20201221",
   },
@@ -46,16 +64,44 @@ const serverlessConfiguration: AWS = {
       uploadQueueDead: {
         Type: "AWS::SQS::Queue",
         Properties: {
-          QueueName: process.env.UPLOAD_QUEUE_NAME + "Dead",
+          QueueName: UPLOAD_QUEUE_NAME + "Dead",
         },
       },
       uploadQueue: {
         Type: "AWS::SQS::Queue",
         Properties: {
-          QueueName: process.env.UPLOAD_QUEUE_NAME,
+          QueueName: UPLOAD_QUEUE_NAME,
           RedrivePolicy: {
             deadLetterTargetArn: { "Fn::GetAtt": ["uploadQueueDead", "Arn"] },
             maxReceiveCount: 3,
+          },
+        },
+      },
+      createProductTopic: {
+        Type: "AWS::SNS::Topic",
+        Properties: {
+          DisplayName: "createProductTopic",
+        },
+      },
+      createProductEmailSubscription: {
+        Type: "AWS::SNS::Subscription",
+        Properties: {
+          Endpoint: EMAIL_ADDRESS,
+          Protocol: "email",
+          TopicArn: { Ref: "createProductTopic" },
+          FilterPolicy: {
+            count: [{ "anything-but": 0 }],
+          },
+        },
+      },
+      createZeroCountProductEmailSubscription: {
+        Type: "AWS::SNS::Subscription",
+        Properties: {
+          Endpoint: EMAIL_ADDRESS2,
+          Protocol: "email",
+          TopicArn: { Ref: "createProductTopic" },
+          FilterPolicy: {
+            count: [{ numeric: ["=", 0] }],
           },
         },
       },
@@ -71,14 +117,6 @@ const serverlessConfiguration: AWS = {
       UploadQueueARN: {
         Description: "ARN of upload queue",
         Value: { "Fn::GetAtt": ["uploadQueue", "Arn"] },
-      },
-      DeadLetterQueueURL: {
-        Description: "URL of dead-letter queue",
-        Value: { Ref: "uploadQueueDead" },
-      },
-      DeadLetterQueueARN: {
-        Description: "ARN of dead-letter queue",
-        Value: { "Fn::GetAtt": ["uploadQueueDead", "Arn"] },
       },
     },
   },

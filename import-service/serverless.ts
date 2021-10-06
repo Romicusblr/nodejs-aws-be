@@ -30,7 +30,7 @@ const serverlessConfiguration: AWS = {
     environment: {
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1",
       BUCKET_NAME,
-      UPLOAD_QUEUE_URL: `\${cf:${PRODUCT_STACK_NAME}-\${self:provider.stage}.UploadQueueURL}`
+      UPLOAD_QUEUE_URL: `\${cf:${PRODUCT_STACK_NAME}-\${self:provider.stage}.UploadQueueURL}`,
     },
     lambdaHashingVersion: "20201221",
     iam: {
