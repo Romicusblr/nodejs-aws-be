@@ -13,8 +13,7 @@ const config = {
     database: process.env.DB_DBNAME,
   },
   migrations: {
-    tableName: "knex_migrations",
-    schemaName: "rs",
+    tableName: "knex_migrations_rs",
     extension: "ts"
   },
 };
