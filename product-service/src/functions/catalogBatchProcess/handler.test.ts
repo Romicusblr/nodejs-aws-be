@@ -32,7 +32,6 @@ beforeEach(() => {
 describe("catalogBatchProcess function", () => {
   test("successfully create product and send message", async () => {
     const event = createEvent({ body: "{}" });
-
     createProductMock.mockReturnValueOnce({});
     const res = await handler(event, null, null);
     expect(res).toBe(true);
@@ -40,6 +39,17 @@ describe("catalogBatchProcess function", () => {
     expect(createProductMock).toHaveBeenCalledTimes(1);
     expect(createProductMock).toHaveBeenCalledWith({});
     expect(sendMock).toHaveBeenCalledTimes(1);
+  });
+
+  test("do not send message when product not created", async () => {
+    const event = createEvent({ body: "{}" });
+    createProductMock.mockReturnValueOnce(null);
+    const res = await handler(event, null, null);
+    expect(res).toBe(true);
+    expect(DBTransactionDAO).toHaveBeenCalledTimes(1);
+    expect(createProductMock).toHaveBeenCalledTimes(1);
+    expect(createProductMock).toHaveBeenCalledWith({});
+    expect(sendMock).toHaveBeenCalledTimes(0);
   });
 
   test("return false when data is wrong json string", async () => {
