@@ -2,10 +2,10 @@ import type { AWS } from "@serverless/typescript";
 import dotenv from "dotenv";
 dotenv.config();
 
-// import { importProductsFile, importFileParser } from "@functions/index";
+import { basicAuthorizer } from "@functions/index";
 
 const serverlessConfiguration: AWS = {
-  service: "rs-app-import-service",
+  service: "rs-app-auth-service",
   useDotenv: true,
   frameworkVersion: "2",
   custom: {
@@ -28,15 +28,30 @@ const serverlessConfiguration: AWS = {
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1",
     },
     lambdaHashingVersion: "20201221",
-    iam: {
-      role: {
-        statements: [
-        ],
-      },
-    },
   },
-  // import the function via paths
-  // functions: { importProductsFile, importFileParser },
+  functions: { basicAuthorizer },
+
+  // resources: {
+  //   Resources: {
+  //     RestApi: {
+  //       Type: "AWS::ApiGateway::RestApi",
+  //       Properties: {
+  //         Name: "RsAuthApi",
+  //       },
+  //     },
+  //     GatewayResponse: {
+  //       Type: "AWS::ApiGateway::GatewayResponse",
+  //       Properties: {
+  //         ResponseParameters: {
+  //           "gatewayresponse.header.WWW-Authenticate": "'Basic'",
+  //         },
+  //         ResponseType: "UNAUTHORIZED",
+  //         RestApiId: { Ref: "RsAuthApi" },
+  //         StatusCode: "401",
+  //       },
+  //     },
+  //   },
+  // },
 };
 
 module.exports = serverlessConfiguration;

@@ -1,5 +1,5 @@
 {
-  "name": "import-service",
+  "name": "auth-service",
   "version": "1.0.0",
   "description": "Serverless aws service",
   "main": "serverless.ts",
