@@ -56,9 +56,4 @@ module.exports = {
       },
     ],
   },
-  plugins: [
-    new webpack.IgnorePlugin({
-      resourceRegExp: /(sqlite3|pg|pg-query-stream|pg-native|oracledb|mysql2|tedious)/,
-    }),
-  ],
 };
