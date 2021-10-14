@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 import { basicAuthorizer } from "@functions/index";
+const { USERNAME, PASSWORD } = process.env;
 
 const serverlessConfiguration: AWS = {
   service: "rs-app-auth-service",
@@ -26,32 +27,12 @@ const serverlessConfiguration: AWS = {
     },
     environment: {
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1",
+      USERNAME,
+      PASSWORD
     },
     lambdaHashingVersion: "20201221",
   },
   functions: { basicAuthorizer },
-
-  // resources: {
-  //   Resources: {
-  //     RestApi: {
-  //       Type: "AWS::ApiGateway::RestApi",
-  //       Properties: {
-  //         Name: "RsAuthApi",
-  //       },
-  //     },
-  //     GatewayResponse: {
-  //       Type: "AWS::ApiGateway::GatewayResponse",
-  //       Properties: {
-  //         ResponseParameters: {
-  //           "gatewayresponse.header.WWW-Authenticate": "'Basic'",
-  //         },
-  //         ResponseType: "UNAUTHORIZED",
-  //         RestApiId: { Ref: "RsAuthApi" },
-  //         StatusCode: "401",
-  //       },
-  //     },
-  //   },
-  // },
 };
 
 module.exports = serverlessConfiguration;

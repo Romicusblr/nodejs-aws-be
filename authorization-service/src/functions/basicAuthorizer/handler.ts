@@ -1,36 +1,51 @@
 import "source-map-support/register";
 
-import type { ValidatedEventAPIGatewayProxyEvent } from "@libs/apiGateway";
-import { formatJSONResponse } from "@libs/apiGateway";
 import { middyfy } from "@libs/lambda";
-import createError from "http-errors";
+import {
+  APIGatewayAuthorizerResult,
+  APIGatewayTokenAuthorizerHandler,
+} from "aws-lambda";
 
+const { USERNAME, PASSWORD } = process.env;
 import schema from "./schema";
 
-const handler: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (
-  event
-) => {
+const handler: APIGatewayTokenAuthorizerHandler = async (event) => {
+  const { authorizationToken, methodArn } = event;
+  let effect = "Deny";
+  let principalId;
   try {
-    const { authorizationToken, methodArn } = event;
-    const effect = authorizationToken ? "Deny" : "Allow";
-    const policy = generatePolicy(effect, methodArn);
-    return formatJSONResponse({ policy });
+    const credsB64 = authorizationToken.split(" ")[1];
+    const [user, pass] = Buffer.from(credsB64, "base64")
+      .toString("utf-8")
+      .split(":");
+
+    console.dir({ user, pass, USERNAME, PASSWORD });
+    principalId = user;
+
+    if (user === USERNAME && pass === PASSWORD) {
+      effect = "Allow";
+      console.dir({ effect });
+    }
   } catch (err) {
     console.log(err);
-    return formatJSONResponse(createError(500));
   }
+  const policy = generatePolicy(principalId, effect, methodArn);
+  return policy;
 };
 
-function generatePolicy(effect, resource) {
+function generatePolicy(user, effect, resource): APIGatewayAuthorizerResult {
   return {
-    Version: "2012-10-17",
-    Statement: [
-      {
-        Effect: effect,
-        Action: ["execute-api:Execution-operation"],
-        Resource: [resource],
-      },
-    ],
+    principalId: user,
+    policyDocument: {
+      Version: "2012-10-17",
+      Statement: [
+        {
+          Effect: effect,
+          Action: "execute-api:Invoke",
+          Resource: resource,
+        },
+      ],
+    },
   };
 }
 
