@@ -1,4 +1,4 @@
-FROM node:14 as builder
+FROM node:14
 WORKDIR /app
 COPY package*.json /app/
 RUN npm install
@@ -10,7 +10,7 @@ WORKDIR /app
 COPY package*.json /app/
 RUN npm install --only=prod
 
-COPY --from=builder /app/dist/ /app/dist/
+COPY --from=0 /app/dist/ /app/dist/
 
 EXPOSE 4000
 
